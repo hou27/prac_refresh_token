@@ -30,7 +30,9 @@ export class UsersService {
         throw new UnauthorizedException('Already exist');
       }
 
-      const result = await this.users.save({ name, password });
+      const result = await this.users.save(
+        this.users.create({ name, password }),
+      );
       console.log(result);
       return { ok: true };
     } catch (error) {
