@@ -2,14 +2,18 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { IsString } from 'class-validator';
 
 @Injectable()
 @Entity()
 export class User extends CoreEntity {
+  // https://typeorm.delightful.studio/interfaces/_decorator_options_columnoptions_.columnoptions.html
   @Column()
+  @IsString()
   name: string;
 
-  @Column({ select: false })
+  @Column({ select: false, nullable: false })
+  @IsString()
   password: string;
 
   @BeforeInsert() // Entity Listener

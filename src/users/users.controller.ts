@@ -1,12 +1,37 @@
-import { Controller, Get } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  CreateAccountBodyDto,
+  CreateAccountOutput,
+} from './dtos/create-account.dto';
+import { LoginBodyDto } from './dtos/login.dto';
+import { UsersService } from './users.service';
 
 @Controller('user')
 export class UsersController {
-  constructor(
-    @InjectRepository(User)
-    private readonly users: Repository<User>,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
+  @Get()
+  userRootQuery() {
+    return 'user controller';
+  }
+
+  @Get()
+  async getMyInfo() {}
+
+  @Post()
+  async register(
+    @Body() createAccountBody: CreateAccountBodyDto,
+  ): Promise<CreateAccountOutput> {
+    console.log(createAccountBody);
+    return this.usersService.register(createAccountBody);
+  }
+
+  @Post('login')
+  logIn(@Body() loginBody: LoginBodyDto) {
+    return this.usersService.login(loginBody);
+  }
+
+  @Post('logout')
+  logOut() {
+    return;
+  }
 }
