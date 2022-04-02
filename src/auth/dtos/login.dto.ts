@@ -4,4 +4,6 @@ import { User } from '../../users/entities/user.entity';
 
 export class LoginBodyDto extends PickType(User, ['name', 'password']) {}
 
-export class LogintOutput extends CoreOutput {}
+export class LoginOutput extends CoreOutput {
+  access_token?: string;
+}

@@ -3,12 +3,16 @@ import {
   CreateAccountBodyDto,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
-import { LoginBodyDto, LogintOutput } from '../auth/dtos/login.dto';
+import { LoginBodyDto, LoginOutput } from '../auth/dtos/login.dto';
 import { UsersService } from './users.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
   @Get()
   userRootQuery() {
     return 'user controller';
@@ -17,17 +21,20 @@ export class UsersController {
   @Get()
   async getMyInfo() {}
 
-  @Post()
+  @Post('register')
   async register(
     @Body() createAccountBody: CreateAccountBodyDto,
   ): Promise<CreateAccountOutput> {
     console.log(createAccountBody);
-    return this.usersService.register(createAccountBody);
+    return await this.usersService.register(createAccountBody);
   }
 
   @Post('login')
-  logIn(@Body() loginBody: LoginBodyDto): Promise<LogintOutput> {
-    return this.usersService.login(loginBody);
+  async login(@Body() loginBody: LoginBodyDto): Promise<LoginOutput> {
+    console.log(loginBody);
+    const a = await this.authService.jwtLogin(loginBody);
+    console.log(a);
+    return a;
   }
 
   @Post('logout')

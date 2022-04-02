@@ -12,7 +12,7 @@ export class User extends CoreEntity {
   @IsString()
   name: string;
 
-  @Column({ select: false, nullable: false })
+  @Column({ select: false })
   @IsString()
   password: string;
 
@@ -32,6 +32,7 @@ export class User extends CoreEntity {
 
   async checkPassword(plainPassword: string): Promise<boolean> {
     try {
+      console.log(plainPassword, this.password);
       const ok = await bcrypt.compare(plainPassword, this.password);
       return ok;
     } catch (e) {

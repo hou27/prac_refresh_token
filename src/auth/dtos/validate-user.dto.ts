@@ -4,4 +4,6 @@ import { User } from 'src/users/entities/user.entity';
 
 export class ValidateUserDto extends PickType(User, ['name', 'password']) {}
 
-export class ValidateUserOutput extends CoreOutput {}
+export class ValidateUserOutput extends CoreOutput {
+  user?: User;
+}

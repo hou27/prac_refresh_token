@@ -9,9 +9,8 @@ import {
   CreateAccountBodyDto,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
-import { LoginBodyDto, LogintOutput } from '../auth/dtos/login.dto';
+import { FindUserOutput } from './dtos/find-user.dto';
 import { User } from './entities/user.entity';
-import { catchError } from 'rxjs';
 
 @Injectable()
 export class UsersService {
@@ -32,37 +31,39 @@ export class UsersService {
       }
 
       const result = await this.users.save({ name, password });
+      console.log(result);
       return { ok: true };
     } catch (error) {
-      return { ok: false, error: 'Fail in register' };
+      return { ok: false, error };
     }
   }
 
-  async login({ name, password }: LoginBodyDto): Promise<LogintOutput> {}
-
-  async findByName(name: string): Promise<User> {
+  async findByName(name: string): Promise<FindUserOutput> {
     try {
-      const user = await this.users.findOne({ name });
+      const user = await this.users.findOne(
+        { name },
+        { select: ['password', 'id', 'name'] },
+      );
       if (!user) {
-        throw new UnauthorizedException('User Not Found');
+        throw new UnauthorizedException('User Not Found with that name');
       }
 
-      return user;
+      return { ok: true, user };
     } catch (error) {
-      throw new HttpException('Error', 403);
+      return { ok: false, error };
     }
   }
 
-  async findById(id: number): Promise<User> {
+  async findById(id: number): Promise<FindUserOutput> {
     try {
       const user = await this.users.findOne({ id });
       if (!user) {
-        throw new UnauthorizedException('User Not Found');
+        throw new UnauthorizedException('User Not Found with that ID');
       }
 
-      return user;
+      return { ok: true, user };
     } catch (error) {
-      throw new HttpException('Error', 403);
+      return { ok: false, error };
     }
   }
 }
