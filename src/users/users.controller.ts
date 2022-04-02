@@ -3,7 +3,7 @@ import {
   CreateAccountBodyDto,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
-import { LoginBodyDto } from './dtos/login.dto';
+import { LoginBodyDto, LogintOutput } from '../auth/dtos/login.dto';
 import { UsersService } from './users.service';
 
 @Controller('user')
@@ -26,7 +26,7 @@ export class UsersController {
   }
 
   @Post('login')
-  logIn(@Body() loginBody: LoginBodyDto) {
+  logIn(@Body() loginBody: LoginBodyDto): Promise<LogintOutput> {
     return this.usersService.login(loginBody);
   }
 
