@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import {
   CreateAccountBodyDto,
   CreateAccountOutput,
@@ -8,7 +17,11 @@ import { UsersService } from './users.service';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { Request } from 'express';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 
+// @UseInterceptors(SuccessInterceptor)
+@UseFilters(HttpExceptionFilter)
 @Controller('user')
 export class UsersController {
   constructor(
