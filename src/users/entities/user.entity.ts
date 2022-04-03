@@ -16,6 +16,10 @@ export class User extends CoreEntity {
   @IsString()
   password: string;
 
+  @Column({ nullable: true })
+  @IsString()
+  refresh_token?: string;
+
   @BeforeInsert() // Entity Listener
   @BeforeUpdate() // password need to hashed before save.
   async hashPassword(): Promise<void> {

@@ -1,6 +1,8 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { UsersModule } from 'src/users/users.module';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt/jwt.strategy';
@@ -11,11 +13,12 @@ import { JwtStrategy } from './jwt/jwt.strategy';
     JwtModule.registerAsync({
       // change method from register to registerAsync to use process.env
       useFactory: () => ({
-        secret: process.env.JWT_PRIVATE_KEY,
-        signOptions: { expiresIn: '1h' },
+        secret: process.env.JWT_ACCESS_TOKEN_PRIVATE_KEY,
+        signOptions: { expiresIn: '1s' },
       }),
     }),
     forwardRef(() => UsersModule),
+    TypeOrmModule.forFeature([User]),
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],

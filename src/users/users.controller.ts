@@ -21,6 +21,7 @@ import { Response } from 'express';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { User } from './entities/user.entity';
+import { RefreshTokenDto, RefreshTokenOutput } from 'src/auth/dtos/token.dto';
 
 // @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
@@ -46,18 +47,14 @@ export class UsersController {
   }
 
   @Post('login')
-  async login(
-    @Body() loginBody: LoginBodyDto,
-    @Res({ passthrough: true }) res: Response,
-  ): Promise<LoginOutput> {
-    const { ok, error, access_token } = await this.authService.jwtLogin(
-      loginBody,
-    );
-    if (ok) {
-      // res.cookie('access_token', access_token, { httpOnly: true }); // 프론트와 도메인이 달라 불가능
-      return { ok, access_token };
-    } else {
-      return { ok, error };
-    }
+  async login(@Body() loginBody: LoginBodyDto): Promise<LoginOutput> {
+    return await this.authService.jwtLogin(loginBody);
+  }
+
+  @Post('regenerate')
+  async regenerateToken(
+    @Body() regenerateBody: RefreshTokenDto,
+  ): Promise<RefreshTokenOutput> {
+    return await this.authService.regenerateToken(regenerateBody);
   }
 }

@@ -1,7 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { Repository } from 'typeorm';
 import { LoginBodyDto, LoginOutput } from './dtos/login.dto';
+import { RefreshTokenDto, RefreshTokenOutput } from './dtos/token.dto';
 import { ValidateUserDto, ValidateUserOutput } from './dtos/validate-user.dto';
 import { Payload } from './jwt/jwt.payload';
 
@@ -10,6 +14,8 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    @InjectRepository(User)
+    private readonly users: Repository<User>,
   ) {}
 
   async jwtLogin({ name, password }: LoginBodyDto): Promise<LoginOutput> {
@@ -17,9 +23,57 @@ export class AuthService {
       const { ok, user, error } = await this.validateUser({ name, password });
       if (ok) {
         const payload: Payload = { name, sub: user.id };
-        return { ok: true, access_token: this.jwtService.sign(payload) };
+        const refreshToken = await this.jwtService.sign(payload, {
+          secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
+          expiresIn: '1h',
+        });
+        user.refresh_token = refreshToken;
+        await this.users.save(user);
+        return {
+          ok: true,
+          access_token: this.jwtService.sign(payload),
+          refresh_token: refreshToken,
+        };
       } else {
         console.log('a', error);
+        return { ok: false, error };
+      }
+    } catch (error) {
+      console.log(error);
+      return { ok: false, error };
+    }
+  }
+
+  async regenerateToken({
+    refresh_token,
+  }: RefreshTokenDto): Promise<RefreshTokenOutput> {
+    try {
+      // decoding refresh token
+      const decoded = this.jwtService.verify(refresh_token, {
+        secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
+      });
+      console.log(decoded);
+
+      const { ok, user, error } = await this.usersService.findById(
+        decoded['sub'],
+      );
+      if (ok) {
+        const name = user.name,
+          sub = user.id;
+        const payload: Payload = { name, sub };
+        const newRefreshToken = this.jwtService.sign(payload, {
+          secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
+        });
+        user.refresh_token = newRefreshToken;
+
+        await this.users.save(user);
+
+        return {
+          ok: true,
+          access_token: this.jwtService.sign(payload),
+          refresh_token: newRefreshToken,
+        };
+      } else {
         return { ok: false, error };
       }
     } catch (error) {
