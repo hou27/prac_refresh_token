@@ -51,7 +51,7 @@ export class UsersController {
     return await this.authService.jwtLogin(loginBody);
   }
 
-  @Post('regenerate')
+  @Post('token')
   async regenerateToken(
     @Body() regenerateBody: RefreshTokenDto,
   ): Promise<RefreshTokenOutput> {

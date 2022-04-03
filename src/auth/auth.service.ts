@@ -20,7 +20,12 @@ export class AuthService {
 
   async jwtLogin({ name, password }: LoginBodyDto): Promise<LoginOutput> {
     try {
-      const { ok, user, error } = await this.validateUser({ name, password });
+      const {
+        ok,
+        user: userWithPassword,
+        error,
+      } = await this.validateUser({ name, password });
+      const { user } = await this.usersService.findById(userWithPassword.id);
       if (ok) {
         const payload: Payload = { name, sub: user.id };
         const refreshToken = await this.jwtService.sign(payload, {
@@ -28,6 +33,7 @@ export class AuthService {
           expiresIn: '1h',
         });
         user.refresh_token = refreshToken;
+        console.log('chk here ::: ', user);
         await this.users.save(user);
         return {
           ok: true,
@@ -64,9 +70,10 @@ export class AuthService {
         const newRefreshToken = this.jwtService.sign(payload, {
           secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
         });
-        user.refresh_token = newRefreshToken;
 
-        await this.users.save(user);
+        await this.users.save([
+          { id: user.id, refresh_token: newRefreshToken },
+        ]);
 
         return {
           ok: true,

@@ -44,7 +44,7 @@ export class UsersService {
     try {
       const user = await this.users.findOne(
         { name },
-        { select: ['password', 'id', 'name'] },
+        { select: ['id', 'name', 'password'] },
       );
       if (!user) {
         throw new UnauthorizedException('User Not Found with that name');
