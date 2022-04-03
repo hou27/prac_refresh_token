@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Req,
+  Res,
   UseFilters,
   UseGuards,
   UseInterceptors,
@@ -16,7 +17,7 @@ import { LoginBodyDto, LoginOutput } from '../auth/dtos/login.dto';
 import { UsersService } from './users.service';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
-import { Request } from 'express';
+import { Response } from 'express';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { User } from './entities/user.entity';
@@ -45,7 +46,18 @@ export class UsersController {
   }
 
   @Post('login')
-  async login(@Body() loginBody: LoginBodyDto): Promise<LoginOutput> {
-    return await this.authService.jwtLogin(loginBody);
+  async login(
+    @Body() loginBody: LoginBodyDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<LoginOutput> {
+    const { ok, error, access_token } = await this.authService.jwtLogin(
+      loginBody,
+    );
+    if (ok) {
+      // res.cookie('access_token', access_token, { httpOnly: true }); // 프론트와 도메인이 달라 불가능
+      return { ok, access_token };
+    } else {
+      return { ok, error };
+    }
   }
 }
