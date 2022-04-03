@@ -12,8 +12,8 @@ export class SuccessInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     console.log('before');
     return next.handle().pipe(
+      // controller에서 반환한 값이 인자값으로 넘어옴.
       map((returnValue) => {
-        console.log(returnValue);
         return { success: true, ...returnValue };
       }),
     );

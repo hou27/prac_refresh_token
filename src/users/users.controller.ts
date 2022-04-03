@@ -17,8 +17,9 @@ import { UsersService } from './users.service';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { Request } from 'express';
-import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
+import { AuthUser } from 'src/auth/auth-user.decorator';
+import { User } from './entities/user.entity';
 
 // @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
@@ -29,15 +30,10 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
-  // @Get()
-  // userRootQuery() {
-  //   return 'user controller';
-  // }
-
   @UseGuards(JwtAuthGuard)
   @Get()
-  getMyInfo(@Req() req: Request) {
-    return req.user;
+  getMyInfo(@AuthUser() user: User) {
+    return user;
   }
 
   @Post('register')
