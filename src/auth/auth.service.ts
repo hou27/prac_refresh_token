@@ -19,9 +19,11 @@ export class AuthService {
         const payload: Payload = { name, sub: user.id };
         return { ok: true, access_token: this.jwtService.sign(payload) };
       } else {
+        console.log('a', error);
         return { ok: false, error };
       }
     } catch (error) {
+      console.log(error);
       return { ok: false, error };
     }
   }
@@ -37,7 +39,6 @@ export class AuthService {
       }
 
       const isPasswordCorrect = await user.checkPassword(password);
-      console.log(isPasswordCorrect);
       if (isPasswordCorrect) {
         return { ok: true, user };
       } else {

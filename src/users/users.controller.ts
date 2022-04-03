@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import {
   CreateAccountBodyDto,
   CreateAccountOutput,
@@ -6,6 +6,8 @@ import {
 import { LoginBodyDto, LoginOutput } from '../auth/dtos/login.dto';
 import { UsersService } from './users.service';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { Request } from 'express';
 
 @Controller('user')
 export class UsersController {
@@ -13,13 +15,17 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
   ) {}
-  @Get()
-  userRootQuery() {
-    return 'user controller';
-  }
 
+  // @Get()
+  // userRootQuery() {
+  //   return 'user controller';
+  // }
+
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async getMyInfo() {}
+  getMyInfo(@Req() req: Request) {
+    return req.user;
+  }
 
   @Post('register')
   async register(
@@ -31,14 +37,11 @@ export class UsersController {
 
   @Post('login')
   async login(@Body() loginBody: LoginBodyDto): Promise<LoginOutput> {
-    console.log(loginBody);
-    const a = await this.authService.jwtLogin(loginBody);
-    console.log(a);
-    return a;
+    return await this.authService.jwtLogin(loginBody);
   }
 
   @Post('logout')
-  logOut() {
+  logout() {
     return;
   }
 }
