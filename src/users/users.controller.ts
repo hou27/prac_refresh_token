@@ -32,7 +32,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getMyInfo(@AuthUser() user: User) {
+  getMyInfo(@AuthUser() user: User): User {
     return user;
   }
 
@@ -47,10 +47,5 @@ export class UsersController {
   @Post('login')
   async login(@Body() loginBody: LoginBodyDto): Promise<LoginOutput> {
     return await this.authService.jwtLogin(loginBody);
-  }
-
-  @Post('logout')
-  logout() {
-    return;
   }
 }
