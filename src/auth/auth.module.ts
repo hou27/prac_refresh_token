@@ -14,7 +14,7 @@ import { JwtStrategy } from './jwt/jwt.strategy';
       // change method from register to registerAsync to use process.env
       useFactory: () => ({
         secret: process.env.JWT_ACCESS_TOKEN_PRIVATE_KEY,
-        signOptions: { expiresIn: '1s' },
+        signOptions: { expiresIn: '10s' },
       }),
     }),
     forwardRef(() => UsersModule),

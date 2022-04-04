@@ -63,12 +63,13 @@ export class AuthService {
       const { ok, user, error } = await this.usersService.findById(
         decoded['sub'],
       );
-      if (ok) {
+      if (ok && user.refresh_token === refresh_token) {
         const name = user.name,
           sub = user.id;
         const payload: Payload = { name, sub };
         const newRefreshToken = this.jwtService.sign(payload, {
           secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
+          expiresIn: '1h',
         });
 
         await this.users.save([
