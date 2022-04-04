@@ -30,7 +30,7 @@ export class AuthService {
         const payload: Payload = { name, sub: user.id };
         const refreshToken = await this.jwtService.sign(payload, {
           secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
-          expiresIn: '1h',
+          expiresIn: '1d',
         });
         user.refresh_token = refreshToken;
         console.log('chk here ::: ', user);
@@ -69,7 +69,7 @@ export class AuthService {
         const payload: Payload = { name, sub };
         const newRefreshToken = this.jwtService.sign(payload, {
           secret: process.env.JWT_REFRESH_TOKEN_PRIVATE_KEY,
-          expiresIn: '1h',
+          expiresIn: '1d',
         });
 
         await this.users.save([
