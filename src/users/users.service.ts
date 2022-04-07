@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LogoutOutput } from 'src/auth/dtos/login.dto';
 import { Repository } from 'typeorm';
 import {
   CreateAccountBodyDto,
@@ -35,6 +36,22 @@ export class UsersService {
       );
       console.log(result);
       return { ok: true };
+    } catch (error) {
+      return { ok: false, error };
+    }
+  }
+
+  async logout(userId: number): Promise<LogoutOutput> {
+    try {
+      const user = await this.users.findOne({ id: userId });
+      if (user) {
+        user.refresh_token = null;
+        await this.users.save(user);
+
+        return { ok: true };
+      } else {
+        return { ok: false, error: 'Error in logout process' };
+      }
     } catch (error) {
       return { ok: false, error };
     }

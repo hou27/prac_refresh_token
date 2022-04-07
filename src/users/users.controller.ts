@@ -13,7 +13,11 @@ import {
   CreateAccountBodyDto,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
-import { LoginBodyDto, LoginOutput } from '../auth/dtos/login.dto';
+import {
+  LoginBodyDto,
+  LoginOutput,
+  LogoutOutput,
+} from '../auth/dtos/login.dto';
 import { UsersService } from './users.service';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
@@ -49,6 +53,12 @@ export class UsersController {
   @Post('login')
   async login(@Body() loginBody: LoginBodyDto): Promise<LoginOutput> {
     return await this.authService.jwtLogin(loginBody);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('logout')
+  async logout(@AuthUser() user: User): Promise<LogoutOutput> {
+    return await this.usersService.logout(user.id);
   }
 
   @Post('token')
