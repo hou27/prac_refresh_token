@@ -25,7 +25,7 @@ export class UsersService {
     password,
   }: CreateAccountBodyDto): Promise<CreateAccountOutput> {
     try {
-      const user = await this.users.findOne({ name });
+      const user = await this.users.findOneBy({ name: name });
 
       if (user) {
         throw new UnauthorizedException('Already exist');
@@ -43,7 +43,7 @@ export class UsersService {
 
   async logout(userId: number): Promise<LogoutOutput> {
     try {
-      const user = await this.users.findOne({ id: userId });
+      const user = await this.users.findOneBy({ id: userId });
       if (user) {
         user.refresh_token = null;
         await this.users.save(user);
@@ -59,10 +59,10 @@ export class UsersService {
 
   async findByName(name: string): Promise<FindUserOutput> {
     try {
-      const user = await this.users.findOne(
-        { name },
-        { select: ['id', 'name', 'password'] },
-      );
+      const user = await this.users.findOne({
+        where: { name },
+        select: { id: true, name: true, password: true },
+      });
       if (!user) {
         throw new UnauthorizedException('User Not Found with that name');
       }
@@ -75,7 +75,7 @@ export class UsersService {
 
   async findById(id: number): Promise<FindUserOutput> {
     try {
-      const user = await this.users.findOne({ id });
+      const user = await this.users.findOneBy({ id });
       if (!user) {
         throw new UnauthorizedException('User Not Found with that ID');
       }
