@@ -2,14 +2,18 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+
+export enum UserRole {
+  Client = 'Client',
+  Admin = 'Admin',
+}
 
 @Injectable()
 @Entity()
 export class User extends CoreEntity {
-  // https://typeorm.delightful.studio/interfaces/_decorator_options_columnoptions_.columnoptions.html
-  @ApiProperty({ example: 'tester', description: 'User name' })
+  @ApiProperty({ example: 'tester', description: 'User Name' })
   @Column()
   @IsString()
   name: string;
@@ -17,6 +21,12 @@ export class User extends CoreEntity {
   @Column({ select: false })
   @IsString()
   password: string;
+
+  @Column({ default: UserRole.Client })
+  @ApiProperty({ description: 'User Role' })
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.Client })
+  @IsEnum(UserRole)
+  role: UserRole;
 
   @ApiProperty()
   @Column({ nullable: true })
@@ -27,7 +37,6 @@ export class User extends CoreEntity {
   @BeforeUpdate() // password need to hashed before save.
   async hashPassword(): Promise<void> {
     if (this.password) {
-      // 2. hash the password if there is a pw in the object that give to save
       try {
         this.password = await bcrypt.hash(this.password, 10);
       } catch (e) {

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,7 +12,6 @@ import { JwtStrategy } from './jwt/jwt.strategy';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.registerAsync({
-      // change method from register to registerAsync to use process.env
       useFactory: () => ({
         secret: process.env.JWT_ACCESS_TOKEN_PRIVATE_KEY,
         signOptions: { expiresIn: '1h' },
