@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SuccessInterceptor } from './common/interceptors/success.interceptor';
-import * as fs from 'fs';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -10,10 +9,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
-    .setTitle("Prev Bookmark Project's API")
+    .setTitle('Simple API')
     .setDescription('The simple API description')
     .setVersion('0.1')
-    .addTag('Bookmark')
+    .addTag('Study Refresh Token')
     .addBearerAuth(
       {
         type: 'http',
