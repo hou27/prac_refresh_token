@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SuccessInterceptor } from './common/interceptors/success.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalInterceptors(new SuccessInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()

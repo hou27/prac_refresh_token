@@ -8,8 +8,6 @@ import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/auth/role.decorator';
 import { RoleGuard } from 'src/auth/role.guard';
 
-// @UseInterceptors(SuccessInterceptor)
-@UseFilters(HttpExceptionFilter)
 @Controller('user')
 @ApiTags('User')
 export class UserController {
