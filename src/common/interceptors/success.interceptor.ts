@@ -13,7 +13,7 @@ export class SuccessInterceptor implements NestInterceptor {
     return next.handle().pipe(
       // controller에서 반환한 값이 인자값으로 넘어옴.
       map((returnValue) => {
-        return { requestSuccess: true, ...returnValue };
+        return { ...returnValue };
       }),
     );
   }

@@ -13,7 +13,7 @@ import { RoleGuard } from 'src/auth/role.guard';
 @Controller('user')
 @ApiTags('User')
 export class UserController {
-  constructor(private readonly usersService: UserService) {}
+  constructor(/*private readonly usersService: UserService*/) {}
 
   @ApiOperation({
     summary: '자신의 정보 조회',
