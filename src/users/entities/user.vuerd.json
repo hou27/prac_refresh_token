@@ -3,9 +3,9 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -92,
-    "scrollLeft": -251,
-    "zoomLevel": 1,
+    "scrollTop": 0,
+    "scrollLeft": 0,
+    "zoomLevel": 0.9,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -18,8 +18,8 @@
       "relationship": true
     },
     "database": "PostgreSQL",
-    "databaseName": "",
-    "canvasType": "@vuerd/builtin-visualization",
+    "databaseName": "tokenprac",
+    "canvasType": "ERD",
     "language": "GraphQL",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
@@ -212,9 +212,9 @@
         ],
         "ui": {
           "active": false,
-          "left": 292,
-          "top": 149,
-          "zIndex": 1,
+          "left": 61,
+          "top": 123,
+          "zIndex": 2,
           "widthName": 60,
           "widthComment": 65.6923828125
         },
