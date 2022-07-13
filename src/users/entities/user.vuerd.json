@@ -1,0 +1,231 @@
+{
+  "canvas": {
+    "version": "2.2.11",
+    "width": 2000,
+    "height": 2000,
+    "scrollTop": -92,
+    "scrollLeft": -252,
+    "zoomLevel": 1,
+    "show": {
+      "tableComment": true,
+      "columnComment": true,
+      "columnDataType": true,
+      "columnDefault": true,
+      "columnAutoIncrement": false,
+      "columnPrimaryKey": true,
+      "columnUnique": false,
+      "columnNotNull": true,
+      "relationship": true
+    },
+    "database": "PostgreSQL",
+    "databaseName": "",
+    "canvasType": "ERD",
+    "language": "GraphQL",
+    "tableCase": "pascalCase",
+    "columnCase": "camelCase",
+    "highlightTheme": "VS2015",
+    "bracketType": "none",
+    "setting": {
+      "relationshipDataTypeSync": true,
+      "relationshipOptimization": false,
+      "columnOrder": [
+        "columnName",
+        "columnDataType",
+        "columnNotNull",
+        "columnUnique",
+        "columnAutoIncrement",
+        "columnDefault",
+        "columnComment"
+      ]
+    },
+    "pluginSerializationMap": {}
+  },
+  "table": {
+    "tables": [
+      {
+        "name": "User",
+        "comment": "User Entity",
+        "columns": [
+          {
+            "name": "id",
+            "comment": "PrimaryGeneratedColumn",
+            "dataType": "integer",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 120,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "ca3ec90c-d0a5-4538-b968-82b391242091"
+          },
+          {
+            "name": "createdAt",
+            "comment": "CreateDateColumn",
+            "dataType": "timestamp with time zone",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 112.83642578125,
+              "widthDataType": 157.0224609375,
+              "widthDefault": 60
+            },
+            "id": "119082b4-9be1-4a9c-aa79-7fe679de7d37"
+          },
+          {
+            "name": "updatedAt",
+            "comment": "UpdateDateColumn",
+            "dataType": "timestamp with time zone",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 63.92138671875,
+              "widthComment": 117.984375,
+              "widthDataType": 157.0224609375,
+              "widthDefault": 60
+            },
+            "id": "60e654f3-3f2c-4d56-8b29-43df43d2c4ab"
+          },
+          {
+            "name": "name",
+            "comment": "User Name",
+            "dataType": "character varying",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 67.990234375,
+              "widthDataType": 103.3720703125,
+              "widthDefault": 60
+            },
+            "id": "7210e404-e873-4ada-8e6c-d52462b37ca1"
+          },
+          {
+            "name": "password",
+            "comment": "User PW",
+            "dataType": "character varying",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 103.3720703125,
+              "widthDefault": 60
+            },
+            "id": "a07447c8-5e69-4137-89ab-4b047476e2ac"
+          },
+          {
+            "name": "refresh_token",
+            "comment": "Refresh Token",
+            "dataType": "character varying",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 80.4697265625,
+              "widthComment": 83.7451171875,
+              "widthDataType": 103.3720703125,
+              "widthDefault": 60
+            },
+            "id": "51947236-e623-41b4-bd69-3622f99e83eb"
+          },
+          {
+            "name": "role",
+            "comment": "User Role",
+            "dataType": "user-defined",
+            "default": "Client",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 75.5439453125,
+              "widthDefault": 60
+            },
+            "id": "7d982962-ccfa-4e11-b1cf-ffac0503c503"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 340,
+          "top": 200,
+          "zIndex": 211,
+          "widthName": 60,
+          "widthComment": 65.6923828125
+        },
+        "visible": true,
+        "id": "3659f667-7cab-464b-8eb8-515eb591b5cb"
+      }
+    ],
+    "indexes": []
+  },
+  "memo": {
+    "memos": []
+  },
+  "relationship": {
+    "relationships": []
+  }
+}
